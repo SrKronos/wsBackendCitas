@@ -8,7 +8,6 @@ header('Content-Type: application/json');
 mb_internal_encoding('UTF-8');
 static $fecha_actual = "";  
 // Esto le dice a PHP que generaremos cadenas UTF-8
-mb_http_output('UTF-8');
 
 if(isset($_GET["doctor"]) && $_GET["doctor"]!=null && isset($_GET["fechaInicio"]) && $_GET["fechaInicio"]!=null && isset($_GET["fechaFinal"]) && $_GET["fechaFinal"]!=null ){
 	pacientes($_GET["doctor"],$_GET["fechaInicio"],$_GET["fechaFinal"]);
