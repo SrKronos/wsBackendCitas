@@ -20,10 +20,8 @@ inner join in_grupo ig on ii.grupo = ig.codigo and ii.empresa = ig.empresa
 /*Vista para mostrar nombres de pacientes, nombres de doctores, 
 el tipo de cita que reservaron y el tiempo en el que tenian que estar
 le quiete estos campos
-
 icp.pro_cli,
 icp.vendedor as 'codigo_doctor'
-
 */
 create view vmostrarcitas as
 select 

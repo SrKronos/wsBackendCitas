@@ -1,5 +1,4 @@
 <?php
-include("conexion.php");
 //&& $_GET["datos"]=="all" && isset($_GET["desde"]) && $_GET["desde"]!="" && isset($_GET["hasta"]) && $_GET["hasta"]!="" 
 header('Access-Control-Allow-Origin:*');
 header('Access-Control-Allow-Methods:GET, POST');
@@ -18,7 +17,6 @@ if(isset($_GET["doctor"]) && $_GET["doctor"]!=null && isset($_GET["fechaInicio"]
 function pacientes($doctor,$desde,$hasta){
 	try 
 	{
-
         $dsn = "arboledadb";
         $usuario ="dba";
         $clave = "proyecto2014";
