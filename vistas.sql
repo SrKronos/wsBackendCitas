@@ -2,7 +2,7 @@
 create view vdoctoresespecialidad as 
 select  v.codigo,
         string('Dr.',v.nombre) as doctor,
-        i.institucion as "especialidad",
+        i.institucion as 'especialidad',
         v.empresa
 from in_vendedor v
 inner join in_institucion i on v.especialidad=i.codigo
@@ -27,17 +27,17 @@ icp.vendedor as 'codigo_doctor'
 */
 create view vmostrarcitas as
 select 
-icp.documento as 'proforma',
-ic.nombre as 'paciente',
-isNull(icp.comentario,'') as 'comentario',
-ic.cedula_ruc,
-vde.doctor,
-vde.codigo as 'codigo_doctor',
-vde.especialidad,
-icp.reserva_desde,
-icp.reserva_hasta,
-vpt.descripcion,
-vpt.tipo
+isnull(icp.documento,'sin datos')  as 'proforma',
+isnull(ic.nombre,'')  as 'paciente',
+isnull(icp.comentario,'sin datos') as 'comentario',
+isnull(ic.cedula_ruc,'sin datos') as 'cedula_ruc',
+isnull(vde.doctor,'sin datos') as 'doctor',
+isnull(vde.codigo,'sin datos')  as 'codigo_doctor',
+isnull(vde.especialidad,'sin datos') as 'especialidad',
+isnull(icp.reserva_desde,'2022-01-01 00:00:00') as 'reserva_desde',
+isnull(icp.reserva_hasta,'2022-01-01 00:00:00') as 'reserva_hasta',
+isnull(vpt.descripcion,'sin datos') as 'descripcion',
+isnull(vpt.tipo,'sin datos') as 'tipo'
 from
 in_cabecera_proforma icp
 inner join in_cliente ic on icp.pro_cli = ic.codigo

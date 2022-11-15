@@ -15,41 +15,41 @@ if(isset($_GET["doctor"]) && $_GET["doctor"]!=null && isset($_GET["fechaInicio"]
 	doctores($_GET["fechaInicio"],$_GET["fechaFinal"]);
 }
 
-
-
-
-
 function pacientes($doctor,$desde,$hasta){
 	try 
 	{
+
         $dsn = "arboledadb";
         $usuario ="dba";
         $clave = "proyecto2014";
         $conexion = odbc_connect($dsn, $usuario, $clave);    
-	    $sql= "select distinct top 3 paciente,tipo,reserva_desde,reserva_hasta,comentario,doctor,codigo_doctor 
-		from vmostrarcitas  where tipo='*CONSULTAS' AND codigo_doctor='".$doctor."' 
-		AND reserva_desde>='".$desde."' AND reserva_hasta<='".$hasta."' 
-		GROUP BY paciente,tipo,reserva_desde,reserva_hasta,comentario,doctor,codigo_doctor  ORDER BY reserva_desde ASC";
+	    $sql= "select top 3 paciente,tipo,reserva_desde,reserva_hasta,comentario,doctor,codigo_doctor from vmostrarcitas  where tipo='*CONSULTAS' AND codigo_doctor='".$doctor."' AND reserva_desde>='".$desde."' AND reserva_hasta<='".$hasta."' GROUP BY paciente,tipo,reserva_desde,reserva_hasta,comentario,doctor,codigo_doctor  ORDER BY reserva_desde ASC";
 	    $result=odbc_exec($conexion,$sql)or die(exit("Error en odbc_exec"));
-        while($myRow = odbc_fetch_array( $result )){ 
-            $rows[] = $myRow;
-        }
-    
-		$objeto = [];
-		$cita = [];
-		$final = [];
-        foreach($rows as $row) {
-			foreach($row as $key => $value) {
-				$cita[$key] = utf8_encode($value);
+        if(odbc_fetch_array( $result )){
+			while($myRow = odbc_fetch_array( $result )){ 
+				$rows[] = $myRow;
 			}
-			array_push($objeto,$cita);
-		}	
-		echo json_encode($objeto);
+		
+			$objeto = [];
+			$cita = [];
+			$final = [];
+			foreach($rows as $row) {
+				foreach($row as $key => $value) {
+					$cita[$key] = utf8_encode($value);
+				}
+				array_push($objeto,$cita);
+			}	
+			echo json_encode($objeto);
+
+		}else{
+			echo '[{"paciente":"No existe Registro","reserva_desde":"0000-00-00","reserva_hasta":"0000-00-00","comentario":""}]';	
+		}
+		odbc_close($conexion);		
 	} 
 	catch(PDOException $e) 
 	{
-		echo '<h1>Error al obtener citas.</h1><pre>', $e->getMessage(),'</pre>';
-		//echo '[{"paciente":"","reserva_desde":"2020-01-01","reserva_hasta":"2020-01-01","comentario":""}]';
+		//echo '<h1>Error al obtener citas.</h1><pre>', $e->getMessage(),'</pre>';
+		echo '[{"paciente":"","reserva_desde":"0000-00-00","reserva_hasta":"0000-00-00","comentario":""}]';
 	}	
 }
 
@@ -66,66 +66,28 @@ function doctores($fechaInicio,$fechaFinal){
 			AND tipo='*CONSULTAS' group by codigo_doctor,doctor,especialidad 
 			order by doctor ASC";
 	   $result=odbc_exec($conexion,$sql)or die(exit("Error en odbc_exec"));
-	   
-        while($myRow = odbc_fetch_array( $result )){ 
-            $rows[] = $myRow;
-        }
-    
-		$objeto = [];
-		$cita = [];
-		$final = [];
-        foreach($rows as $row) {
-			foreach($row as $key => $value) {
-				$cita[$key] = utf8_encode($value);
+	   if(odbc_fetch_array( $result )){
+			while($myRow = odbc_fetch_array( $result )){ 
+				$rows[] = $myRow;
 			}
-			array_push($objeto,$cita);
-		}	
-		echo json_encode($objeto);
+			$objeto = [];
+			$cita = [];
+			$final = [];
+			foreach($rows as $row) {
+				foreach($row as $key => $value) {
+					$cita[$key] = utf8_encode($value);
+				}
+				array_push($objeto,$cita);
+			}	
+			echo json_encode($objeto);
+	   }else{
+		echo '[{"codigo_doctor":"000","doctor":"No existe Registro","especialidad":"-"}]';
+	   }            		
+	   odbc_close($conexion);
 	} 
 	catch(PDOException $e) 
 	{
 		echo '<h1>Error al obtener citas.</h1><pre>', $e->getMessage(),'</pre>';
 		//echo '[{"codigo_doctor":"000","doctor":"-","especialidad":"-"}]';
-	}	
-}
-
-function todos(){
-
-	try 
-	{
-        $dsn = "arboledadb";
-        $usuario ="dba";
-        $clave = "proyecto2014";
-        $conexion = odbc_connect($dsn, $usuario, $clave);
-       // $sql= "select * from vmostrarcitas where reserva_desde>=".$_GET["desde"]." and reserva_hasta<=".$_GET["hasta"];
-	    $sql= "select top 3 * from vmostrarcitas where tipo='*CONSULTAS' order by proforma DESC";
-	    $result=odbc_exec($conexion,$sql)or die(exit("Error en odbc_exec"));
-       // print odbc_result_all($result,"border=1");
-
-        while($myRow = odbc_fetch_array( $result )){ 
-            $rows[] = $myRow;//pushing into $rows array
-        }
-        
-        //Now iterating complete array
-    
-        $objeto = [];
-		$cita = [];
-
-        
-        foreach($rows as $row) {
-                foreach($row as $key => $value) {
-                    $dato = $value;
-					$cita[$key] = $value;
-                }
-				array_push($objeto,$cita);
-        }
-        
-		echo json_encode($objeto);
-        //$out = array_values($rows);
-	} 
-	catch(PDOException $e) 
-	{
-		echo '<h1>Error al obtener citas.</h1><pre>', $e->getMessage()
-				,'</pre>';
 	}	
 }
