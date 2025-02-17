@@ -1,12 +1,12 @@
 <?php
 class Conexion{
     public static function Conectar(){
-        $dsn = "arboledadb";
+        $dsn = "base";
         $usuario ="dba";
-        $clave = "proyecto2014";
+        $clave = "clave";
         $driver = "SQL Anywhere 11";
         $rutaServidor = "localhost";
-        $nombreBaseDeDatos = "arboledadb";
+        $nombreBaseDeDatos = "base";
         //$conexion = odbc_connect("Driver={".$driver."};", $usuario, $clave);
         //$conexion = odbc_connect("Driver={".$driver."};",$dsn, $usuario, $clave);
         $conexion = odbc_connect($dsn, $usuario, $clave);
