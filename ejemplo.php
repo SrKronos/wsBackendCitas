@@ -2,7 +2,7 @@ try
 	{
         $dsn = "arboledadb";
         $usuario ="dba";
-        $clave = "proyecto2014";
+        $clave = "clave";
         $conexion = odbc_connect($dsn, $usuario, $clave);
        // $sql= "select * from vmostrarcitas where reserva_desde>=".$_GET["desde"]." and reserva_hasta<=".$_GET["hasta"];
 	   $sql= "select top 4 doctor,especialidad from vmostrarcitas  where tipo='*CONSULTAS' GROUP BY doctor,especialidad order by doctor ASC";
